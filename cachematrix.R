@@ -46,3 +46,31 @@ cacheSolve <- function(x, ...) {
   x$setinv(inv)
   inv
 }
+
+
+## Simple test script illustrating use of cached data
+## creates sample 40x40 matrix and evaluates inverse 200 times
+## cached data used for all but first evaluation
+## use of start and end system times to illustrate efficiency
+x <- matrix(rnorm(160000),40,40)
+x_ <- makeCacheMatrix(x)
+tstart<-Sys.time()
+for (i in 1:200) {
+  x__ <- cacheSolve(x_)
+}
+print (tstart)
+print(Sys.time())
+
+## Simple test script illustrating non-use of cached data
+## creates sample 40x40 matrix and evaluates inverse 200 times
+## cached data not used - uses start and end system times to 
+## illustrate lack of efficiency compared to use of cached data
+x <- matrix(rnorm(160000),40,40)
+tstart<-Sys.time()
+print(Sys.time())
+for (i in 1:200) {
+  x_ <- solve(x)
+  # print(x_)        used to confirm result during testing
+}
+print (tstart)
+print(Sys.time())
